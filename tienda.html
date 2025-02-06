@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda Online</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+
+        .contenedor {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        h1,
+        h2 {
+            color: #333;
+        }
+
+        .lista-productos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .tarjeta-producto {
+            background-color: white;
+            padding: 15px;
+            border: 1px solid #ddd;
+            width: 200px;
+            border-radius: 5px;
+        }
+
+        .tarjeta-producto img {
+            width: 180px;
+            height: 180px;
+            object-fit: contain;
+            border-radius: 5px;
+        }
+
+        .tarjeta-producto .precio-contenedor {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .tarjeta-producto button {
+            background-color: #28a745;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .tarjeta-producto button:hover {
+            background-color: #218838;
+        }
+
+        .carrito {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .item-carrito {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 10px;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+
+        .item-carrito:last-child {
+            border-bottom: none;
+        }
+
+        .boton-finalizar {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .boton-finalizar:hover {
+            background-color: #0056b3;
+        }
+
+        .boton-eliminar {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .boton-eliminar:hover {
+            background-color: #e60000;
+        }
+
+        .boton-editar {
+            background-color: #ffc107;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .boton-editar:hover {
+            background-color: #e0a800;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="contenedor">
+        <h1>Tienda Online</h1>
+        <h2>Productos disponibles</h2>
+        <div class="lista-productos">
+            <div class="tarjeta-producto">
+                <img src="tornillo.jpg" alt="Tornillos">
+                <h3 class="nombre_producto">Tornillos</h3>
+                <div class="precio-contenedor">
+                    <label for="precio_producto">Precio:</label>
+                    <p class="precio_producto">10 €</p>
+                </div>
+                <button id="boton_tornillo" class="boton-anadir">Añadir al carrito</button>
+            </div>
+            <div class="tarjeta-producto">
+                <img src="clavos.png" alt="Clavos">
+                <h3 class="nombre_producto">Clavos</h3>
+                <div class="precio-contenedor">
+                    <label for="precio_producto">Precio:</label>
+                    <p class="precio_producto">15 €</p>
+                </div>
+                <button id="boton_clavos" class="boton-anadir">Añadir al carrito</button>
+            </div>
+            <div class="tarjeta-producto">
+                <img src="martillo.jpeg" alt="Martillo">
+                <h3 class="nombre_producto">Martillo</h3>
+                <div class="precio-contenedor">
+                    <label for="precio_producto">Precio:</label>
+                    <p class="precio_producto">20 €</p>
+                </div>
+                <button id="boton_martillo" class="boton-anadir">Añadir al carrito</button>
+            </div>
+            <div class="tarjeta-producto">
+                <img src="destornillador.webp" alt="Destornillador">
+                <h3 class="nombre_producto">Destornillador</h3>
+                <div class="precio-contenedor">
+                    <label for="precio_producto">Precio:</label>
+                    <p class="precio_producto">25 €</p>
+                </div>
+                <button id="boton_dest" class="boton-anadir">Añadir al carrito</button>
+            </div>
+            <div class="tarjeta-producto">
+                <img src="llave_inglesa.jpg" alt="Llave inglesa">
+                <h3 class="nombre_producto">Llave inglesa</h3>
+                <div class="precio-contenedor">
+                    <label for="precio_producto">Precio:</label>
+                    <p class="precio_producto">30 €</p>
+                </div>
+                <button id="boton_llave" class="boton-anadir">Añadir al carrito</button>
+            </div>
+        </div>
+        <div class="carrito" id="seccion-carrito">
+            <h2>Carrito de la compra</h2>
+            <div id="productos-carrito"></div>
+            <button class="boton-finalizar">Finalizar compra</button>
+        </div>
+    </div>
+    <script src="tienda.js"></script>
+</body>
+
+</html>

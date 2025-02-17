@@ -2,24 +2,43 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tienda Online</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <style>
         body {
             font-family: Arial, sans-serif;
             padding: 20px;
             background-color: #f4f4f9;
+            background-image: url("fondo.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Ajusta la opacidad aquí */
+            z-index: 1;
         }
 
         .contenedor {
             max-width: 800px;
             margin: auto;
+            position: relative;
+            z-index: 2;
         }
 
         h1,
         h2 {
-            color: #333;
+            color: #ffffff;
         }
 
         .lista-productos {
@@ -49,7 +68,7 @@
             gap: 5px;
         }
 
-        .tarjeta-producto button {
+        .tarjeta-producto .boton-anadir {
             background-color: #28a745;
             color: white;
             padding: 5px 10px;
@@ -58,8 +77,20 @@
             border-radius: 3px;
         }
 
-        .tarjeta-producto button:hover {
+        .tarjeta-producto .boton-anadir:hover {
             background-color: #218838;
+        }
+
+        .tarjeta-producto .boton-deseos {
+            background-color: transparent;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .tarjeta-producto .boton-deseos .fa-heart {
+            color: red;
         }
 
         .carrito {
@@ -78,7 +109,6 @@
             padding: 10px 0;
             border-bottom: 1px solid #ddd;
         }
-
 
         .item-carrito:last-child {
             border-bottom: none;
@@ -122,65 +152,209 @@
         .boton-editar:hover {
             background-color: #e0a800;
         }
-        
+
+        .lista-deseos {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            background: white;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 250px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .tarjeta-producto .boton-deseos .fa-heart {
+            color: red;
+            transition: all 0.3s ease;
+        }
+
+        .tarjeta-producto .boton-deseos:hover .fa-heart {
+            color: #ff6b6b;
+            transform: scale(2.3) rotate(10deg);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-contenido {
+            background-color: white;
+            padding: 20px;
+            width: 80%;
+            max-width: 500px;
+            margin: 50px auto;
+            border-radius: 5px;
+        }
+
+        .formulario-compra {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .formulario-compra input,
+        .formulario-compra select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+
+        .tabla-historico {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white; /* Fondo blanco para la tabla */
+        }
+
+        .tabla-historico th,
+        .tabla-historico td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .boton-restablecer {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+            margin-top: 20px;
+        }
+
+        .color {
+            color: black;
+        }
     </style>
 </head>
 
 <body>
+    <div class="overlay"></div>
     <div class="contenedor">
         <h1>Tienda Online</h1>
+        <button class="boton-restablecer" id="boton-restablecer">
+            Restablecer datos
+        </button>
         <h2>Productos disponibles</h2>
         <div class="lista-productos">
             <div class="tarjeta-producto">
-                <img src="tornillo.jpg" alt="Tornillos">
+                <img src="tornillo.jpg" alt="Tornillos" />
                 <h3 class="nombre_producto">Tornillos</h3>
                 <div class="precio-contenedor">
                     <label for="precio_producto">Precio:</label>
                     <p class="precio_producto">10 €</p>
                 </div>
-                <button id="boton_tornillo" class="boton-anadir">Añadir al carrito</button>
+                <button class="boton-anadir">Añadir al carrito</button>
+                <button class="boton-deseos">
+                    <i class="fa-solid fa-heart"></i>
+                </button>
             </div>
+
             <div class="tarjeta-producto">
-                <img src="clavos.png" alt="Clavos">
+                <img src="clavos.png" alt="Clavos" />
                 <h3 class="nombre_producto">Clavos</h3>
                 <div class="precio-contenedor">
                     <label for="precio_producto">Precio:</label>
                     <p class="precio_producto">15 €</p>
                 </div>
-                <button id="boton_clavos" class="boton-anadir">Añadir al carrito</button>
+
+                <button class="boton-anadir">Añadir al carrito</button>
+                <button class="boton-deseos">
+                    <i class="fa-solid fa-heart"></i>
+                </button>
             </div>
             <div class="tarjeta-producto">
-                <img src="martillo.jpeg" alt="Martillo">
+                <img src="martillo.jpeg" alt="Martillo" />
                 <h3 class="nombre_producto">Martillo</h3>
                 <div class="precio-contenedor">
                     <label for="precio_producto">Precio:</label>
                     <p class="precio_producto">20 €</p>
                 </div>
-                <button id="boton_martillo" class="boton-anadir">Añadir al carrito</button>
+                <button class="boton-anadir">Añadir al carrito</button>
+                <button class="boton-deseos">
+                    <i class="fa-solid fa-heart"></i>
+                </button>
             </div>
             <div class="tarjeta-producto">
-                <img src="destornillador.webp" alt="Destornillador">
+                <img src="destornillador.webp" alt="Destornillador" />
                 <h3 class="nombre_producto">Destornillador</h3>
                 <div class="precio-contenedor">
                     <label for="precio_producto">Precio:</label>
                     <p class="precio_producto">25 €</p>
                 </div>
-                <button id="boton_dest" class="boton-anadir">Añadir al carrito</button>
+                <button class="boton-anadir">Añadir al carrito</button>
+                <button class="boton-deseos">
+                    <i class="fa-solid fa-heart"></i>
+                </button>
             </div>
             <div class="tarjeta-producto">
-                <img src="llave_inglesa.jpg" alt="Llave inglesa">
+                <img src="llave_inglesa.jpg" alt="Llave inglesa" />
                 <h3 class="nombre_producto">Llave inglesa</h3>
                 <div class="precio-contenedor">
                     <label for="precio_producto">Precio:</label>
                     <p class="precio_producto">30 €</p>
                 </div>
-                <button id="boton_llave" class="boton-anadir">Añadir al carrito</button>
+                <button class="boton-anadir">Añadir al carrito</button>
+                <button class="boton-deseos">
+                    <i class="fa-solid fa-heart"></i>
+                </button>
             </div>
         </div>
+
+        <div class="lista-deseos" id="seccion-deseos">
+            <h2 class="color">Lista de deseos</h2>
+            <div id="productos-deseos"></div>
+        </div>
+
         <div class="carrito" id="seccion-carrito">
-            <h2>Carrito de la compra</h2>
+            <h2 class="color">Carrito de la compra</h2>
             <div id="productos-carrito"></div>
-            <button class="boton-finalizar">Finalizar compra</button>
+            <button class="boton-finalizar" id="boton-finalizar">
+                Finalizar compra
+            </button>
+        </div>
+
+        <div class="modal" id="modal-compra">
+            <div class="modal-contenido">
+                <h2>Completar compra</h2>
+                <form id="formulario-compra" class="formulario-compra">
+                    <input type="text" placeholder="Nombre y apellidos" required />
+                    <input type="text" placeholder="Dirección de envío" required />
+                    <input type="tel" placeholder="Número de teléfono" required />
+                    <select required>
+                        <option value="">Seleccione método de pago</option>
+                        <option value="tarjeta">Tarjeta de crédito</option>
+                        <option value="paypal">PayPal</option>
+                        <option value="transferencia">Transferencia bancaria</option>
+                    </select>
+                    <button type="submit">Comprar</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="historico">
+            <h2>Histórico de compras</h2>
+            <table class="tabla-historico">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Cliente</th>
+                        <th>Productos</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody id="historico-compras"></tbody>
+            </table>
         </div>
     </div>
     <script src="tienda.js"></script>

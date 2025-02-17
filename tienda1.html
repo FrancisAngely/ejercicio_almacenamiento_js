@@ -2,155 +2,163 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tienda Online</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            background-color: #f4f4f9;
-            background-image: url("fondo.png");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            position: relative;
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success: #22c55e;
+            --success-hover: #16a34a;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+            --warning: #eab308;
+            --warning-hover: #ca8a04;
         }
 
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            /* Ajusta la opacidad aquí */
-            z-index: 1;
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            padding: 20px;
+            background-color: #f8fafc;
+            color: #1e293b;
+            line-height: 1.5;
+            margin: 0;
         }
 
         .contenedor {
-            max-width: 800px;
+            max-width: 1200px;
             margin: auto;
-            position: relative;
-            z-index: 2;
+            padding: 0 20px;
         }
 
         h1,
         h2 {
-            color: #ffffff;
+            color: #0f172a;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
         }
 
         .lista-productos {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
         }
 
         .tarjeta-producto {
             background-color: white;
-            padding: 15px;
-            border: 1px solid #ddd;
-            width: 200px;
-            border-radius: 5px;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .tarjeta-producto:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .tarjeta-producto img {
-            width: 180px;
-            height: 180px;
+            width: 100%;
+            height: 200px;
             object-fit: contain;
-            border-radius: 5px;
+            border-radius: 0.5rem;
+            background-color: #f8fafc;
+            padding: 0rem;
+            margin-bottom: 1rem;
         }
 
-        .tarjeta-producto .precio-contenedor {
+        .tarjeta-producto h3 {
+            margin: 0.5rem 0;
+            font-size: 1.25rem;
+        }
+
+        .precio-contenedor {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            font-size: 1.25rem;
+            font-weight: 600;
         }
 
-        .tarjeta-producto .boton-anadir {
-            background-color: #28a745;
+        button {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .boton-anadir {
+            background-color: var(--success);
             color: white;
-            padding: 5px 10px;
-            border: none;
-            cursor: pointer;
-            border-radius: 3px;
         }
 
-        .tarjeta-producto .boton-anadir:hover {
-            background-color: #218838;
-        }
-
-        .tarjeta-producto .boton-deseos {
-            background-color: transparent;
-            padding: 5px 10px;
-            border: none;
-            cursor: pointer;
-            border-radius: 3px;
-        }
-
-        .tarjeta-producto .boton-deseos .fa-heart {
-            color: red;
+        .boton-anadir:hover {
+            background-color: var(--success-hover);
         }
 
         .carrito {
-            margin-top: 30px;
-            padding: 15px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         .item-carrito {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 10px;
+            gap: 1rem;
             align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .item-carrito:last-child {
-            border-bottom: none;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e2e8f0;
         }
 
         .boton-finalizar {
-            background-color: #007bff;
+            background-color: var(--primary);
             color: white;
-            padding: 10px 15px;
-            border: none;
-            cursor: pointer;
-            border-radius: 3px;
+            margin-top: 1.5rem;
         }
 
         .boton-finalizar:hover {
-            background-color: #0056b3;
+            background-color: var(--primary-hover);
         }
 
         .boton-eliminar {
-            background-color: #ff4d4d;
+            background-color: var(--danger);
             color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 3px;
-            cursor: pointer;
         }
 
         .boton-eliminar:hover {
-            background-color: #e60000;
+            background-color: var(--danger-hover);
         }
 
         .boton-editar {
-            background-color: #ffc107;
+            background-color: var(--warning);
             color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 3px;
-            cursor: pointer;
         }
 
         .boton-editar:hover {
-            background-color: #e0a800;
+            background-color: var(--warning-hover);
+        }
+
+        @media (max-width: 768px) {
+            .lista-productos {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+
+            .item-carrito {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
         }
 
         .lista-deseos {
@@ -166,14 +174,14 @@
             overflow-y: auto;
         }
 
-        .tarjeta-producto .boton-deseos .fa-heart {
-            color: red;
-            transition: all 0.3s ease;
-        }
-
-        .tarjeta-producto .boton-deseos:hover .fa-heart {
-            color: #ff6b6b;
-            transform: scale(2.3) rotate(10deg);
+        .boton-deseos {
+            background-color: #e6ca31;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+            margin-top: 5px;
         }
 
         .modal {
@@ -212,7 +220,6 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            background-color: white; /* Fondo blanco para la tabla */
         }
 
         .tabla-historico th,
@@ -231,37 +238,28 @@
             border-radius: 3px;
             margin-top: 20px;
         }
-
-        .color {
-            color: black;
-        }
     </style>
 </head>
 
 <body>
-    <div class="overlay"></div>
     <div class="contenedor">
         <h1>Tienda Online</h1>
-        <button class="boton-restablecer" id="boton-restablecer">
-            Restablecer datos
-        </button>
+        <button class="boton-restablecer" id="boton-restablecer">Restablecer datos</button>
         <h2>Productos disponibles</h2>
         <div class="lista-productos">
             <div class="tarjeta-producto">
-                <img src="tornillo.jpg" alt="Tornillos" />
+                <img src="tornillo.jpg" alt="Tornillos">
                 <h3 class="nombre_producto">Tornillos</h3>
                 <div class="precio-contenedor">
                     <label for="precio_producto">Precio:</label>
                     <p class="precio_producto">10 €</p>
                 </div>
                 <button class="boton-anadir">Añadir al carrito</button>
-                <button class="boton-deseos">
-                    <i class="fa-solid fa-heart"></i>
-                </button>
+                <button class="boton-deseos">Añadir a deseos</button>
             </div>
 
             <div class="tarjeta-producto">
-                <img src="clavos.png" alt="Clavos" />
+                <img src="clavos.png" alt="Clavos">
                 <h3 class="nombre_producto">Clavos</h3>
                 <div class="precio-contenedor">
                     <label for="precio_producto">Precio:</label>
@@ -269,68 +267,58 @@
                 </div>
 
                 <button class="boton-anadir">Añadir al carrito</button>
-                <button class="boton-deseos">
-                    <i class="fa-solid fa-heart"></i>
-                </button>
+                <button class="boton-deseos">Añadir a deseos</button>
             </div>
             <div class="tarjeta-producto">
-                <img src="martillo.jpeg" alt="Martillo" />
+                <img src="martillo.jpeg" alt="Martillo">
                 <h3 class="nombre_producto">Martillo</h3>
                 <div class="precio-contenedor">
                     <label for="precio_producto">Precio:</label>
                     <p class="precio_producto">20 €</p>
                 </div>
                 <button class="boton-anadir">Añadir al carrito</button>
-                <button class="boton-deseos">
-                    <i class="fa-solid fa-heart"></i>
-                </button>
+                <button class="boton-deseos">Añadir a deseos</button>
             </div>
             <div class="tarjeta-producto">
-                <img src="destornillador.webp" alt="Destornillador" />
+                <img src="destornillador.webp" alt="Destornillador">
                 <h3 class="nombre_producto">Destornillador</h3>
                 <div class="precio-contenedor">
                     <label for="precio_producto">Precio:</label>
                     <p class="precio_producto">25 €</p>
                 </div>
                 <button class="boton-anadir">Añadir al carrito</button>
-                <button class="boton-deseos">
-                    <i class="fa-solid fa-heart"></i>
-                </button>
+                <button class="boton-deseos">Añadir a deseos</button>
             </div>
             <div class="tarjeta-producto">
-                <img src="llave_inglesa.jpg" alt="Llave inglesa" />
+                <img src="llave_inglesa.jpg" alt="Llave inglesa">
                 <h3 class="nombre_producto">Llave inglesa</h3>
                 <div class="precio-contenedor">
                     <label for="precio_producto">Precio:</label>
                     <p class="precio_producto">30 €</p>
                 </div>
                 <button class="boton-anadir">Añadir al carrito</button>
-                <button class="boton-deseos">
-                    <i class="fa-solid fa-heart"></i>
-                </button>
+                <button class="boton-deseos">Añadir a deseos</button>
             </div>
         </div>
 
         <div class="lista-deseos" id="seccion-deseos">
-            <h2 class="color">Lista de deseos</h2>
+            <h2>Lista de deseos</h2>
             <div id="productos-deseos"></div>
         </div>
 
         <div class="carrito" id="seccion-carrito">
-            <h2 class="color">Carrito de la compra</h2>
+            <h2>Carrito de la compra</h2>
             <div id="productos-carrito"></div>
-            <button class="boton-finalizar" id="boton-finalizar">
-                Finalizar compra
-            </button>
+            <button class="boton-finalizar" id="boton-finalizar">Finalizar compra</button>
         </div>
 
         <div class="modal" id="modal-compra">
             <div class="modal-contenido">
                 <h2>Completar compra</h2>
                 <form id="formulario-compra" class="formulario-compra">
-                    <input type="text" placeholder="Nombre y apellidos" required />
-                    <input type="text" placeholder="Dirección de envío" required />
-                    <input type="tel" placeholder="Número de teléfono" required />
+                    <input type="text" placeholder="Nombre y apellidos" required>
+                    <input type="text" placeholder="Dirección de envío" required>
+                    <input type="tel" placeholder="Número de teléfono" required>
                     <select required>
                         <option value="">Seleccione método de pago</option>
                         <option value="tarjeta">Tarjeta de crédito</option>
@@ -357,7 +345,7 @@
             </table>
         </div>
     </div>
-    <script src="tienda.js"></script>
+    <script src="tienda1.js"></script>
 </body>
 
 </html>

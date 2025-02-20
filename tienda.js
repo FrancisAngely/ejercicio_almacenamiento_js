@@ -1,3 +1,5 @@
+// Código mejorado para cumplir con todos los requisitos
+
 const boton_anadir = document.querySelectorAll('.boton-anadir');
 const boton_deseos = document.querySelectorAll('.boton-deseos');
 const seccion_carrito = document.getElementById("productos-carrito");
@@ -10,6 +12,7 @@ const tbody_historico = document.getElementById("historico-compras");
 
 let productos = [];
 let productos_deseos = [];
+let productos_advertidos = new Set();
 let db;
 
 window.addEventListener("DOMContentLoaded", function () {
@@ -29,34 +32,30 @@ window.addEventListener("DOMContentLoaded", function () {
 
     boton_anadir.forEach(boton => {
         boton.addEventListener("click", function () {
-            console.log("Se ha pulsado un boton");
             const producto = boton.parentElement;
-            console.log(producto);
-
             const nombre_producto = producto.querySelector('.nombre_producto').textContent;
-            console.log(nombre_producto);
-
             const precio_producto = parseFloat(producto.querySelector('.precio_producto').textContent);
-            console.log(precio_producto);
 
-            const producto_existente = productos.find(producto => producto.nombre === nombre_producto);
-            if (producto_existente) {
-                producto_existente.cantidad += 1;
-                console.log(productos);
-            } else {
-                productos.push({ nombre: nombre_producto, precio: precio_producto, cantidad: 1 });
-                console.log(productos);
+            if (productos_deseos.some(p => p.nombre === nombre_producto) && !productos_advertidos.has(nombre_producto)) {
+                alert("Este producto está en tu lista de deseos, pero se añadirá al carrito.");
+                productos_advertidos.add(nombre_producto);
             }
 
-            localStorage.setItem('carrito', JSON.stringify(productos));
+            const producto_existente = productos.find(p => p.nombre === nombre_producto);
+            if (producto_existente) {
+                producto_existente.cantidad += 1;
+            } else {
+                productos.push({ nombre: nombre_producto, precio: precio_producto, cantidad: 1 });
+            }
 
+            localStorage.setItem('productos', JSON.stringify(productos));
             actualizarCarrito();
+            alert("Producto añadido al carrito.");
         });
     });
 
     boton_deseos.forEach(boton => {
         boton.addEventListener("click", function() {
-            console.log("Botón de deseos pulsado");
             const producto = boton.parentElement;
             const nombre_producto = producto.querySelector('.nombre_producto').textContent;
             const precio_producto = parseFloat(producto.querySelector('.precio_producto').textContent);
@@ -65,13 +64,15 @@ window.addEventListener("DOMContentLoaded", function () {
                 productos_deseos.push({ nombre: nombre_producto, precio: precio_producto });
                 sessionStorage.setItem('deseos', JSON.stringify(productos_deseos));
                 actualizarListaDeseos();
+                alert("Producto añadido a la lista de deseos.");
+            } else {
+                alert("El producto ya está en la lista de deseos.");
             }
         });
     });
 
     formulario_compra.addEventListener("submit", (e) => {
         e.preventDefault();
-        console.log("Formulario de compra enviado");
 
         const datos_cliente = {
             nombre: e.target[0].value,
@@ -95,10 +96,10 @@ window.addEventListener("DOMContentLoaded", function () {
 
         modal_compra.style.display = "none";
         formulario_compra.reset();
+        alert("Compra realizada con éxito.");
     });
 
     boton_finalizar.addEventListener("click", () => {
-        console.log("Botón finalizar compra pulsado");
         modal_compra.style.display = "block";
     });
 
@@ -110,6 +111,7 @@ window.addEventListener("DOMContentLoaded", function () {
         sessionStorage.clear();
         productos_deseos = [];
         actualizarListaDeseos();
+        productos_advertidos.clear();
 
         const transaction = db.transaction(["compras"], "readwrite");
         const objectStore = transaction.objectStore("compras");
@@ -143,7 +145,7 @@ function actualizarCarrito() {
         boton_eliminar.classList.add('boton-eliminar');
 
         boton_eliminar.addEventListener("click", function () {
-            productos = productos.filter(Elemento => Elemento.nombre !== producto.nombre);
+            productos = productos.filter(p => p.nombre !== producto.nombre);
             localStorage.setItem('productos', JSON.stringify(productos));
             actualizarCarrito();
         });
@@ -156,9 +158,8 @@ function actualizarCarrito() {
             if (producto.cantidad > 1) {
                 producto.cantidad -= 1;
             } else {
-                productos = productos.filter(Elemento => Elemento.nombre !== producto.nombre);
+                productos = productos.filter(p => p.nombre !== producto.nombre);
             }
-
             localStorage.setItem('productos', JSON.stringify(productos));
             actualizarCarrito();
         });
@@ -234,8 +235,3 @@ function cargarHistorico() {
         });
     };
 }
-
-
-
-
-
